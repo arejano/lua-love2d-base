@@ -1,36 +1,40 @@
 require 'globals'
 require 'components.debug'
 require 'components.ortho_grid'
-local Game = require 'game.game'
 
--- local pms = require 'systems.player_move'
 
---game loop
-PREVIOUS = love.timer.getTime()
+local game = require 'game.game'
+GAME = game:new();
+
+PREVIOUS = Love.timer.getTime()
 LAG = 0.0
 MS_PER_SECOND = 16.67 / 1000
-
+MAX_ITERATIONS = 5
 LOVE_LOOP = 0
 
 function love.load()
   -- Separando o controle da janela do Jogo
   WindowManager:setDefault()
-  GAME = Game:new()
 end
 
+---@param dt number -- DeltaTime
 function love.update(dt)
   require("libs.lovebird.lovebird").update()
   LOVE_LOOP = LOVE_LOOP + 1
 
-  local current = love.timer.getTime()
+  local current = Love.timer.getTime()
   local elapsed = current - PREVIOUS
   LAG = LAG + elapsed
+  PREVIOUS = current
 
-  -- while LAG >= MS_PER_SECOND do
-  -- Game:update(LAG / MS_PER_SECOND)
-  Game:update(dt)
-  -- LAG = LAG - MS_PER_SECOND
-  -- end
+  local iterations = 0
+
+  while LAG >= MS_PER_SECOND and iterations < MAX_ITERATIONS do
+    -- Game:update(dt)
+    GAME:update(LAG / MS_PER_SECOND)
+    LAG = LAG - MS_PER_SECOND
+    iterations = iterations + 1
+  end
 end
 
 function love.conf(t)
@@ -38,20 +42,22 @@ function love.conf(t)
 end
 
 function love.draw()
-  Debug:draw_debug(Game.world, LOVE_LOOP)
-  OrthographicGrid:drawGrid()
+  Debug:draw_debug(GAME.world, LOVE_LOOP)
+  -- OrthographicGrid:drawGrid()
+  local alpha = LAG / MS_PER_SECOND
+  GAME:render(alpha)
 end
 
 ---@param key string
 ---@param code string
 function Love.keyreleased(key, code, _)
-  game:process_key(key, code, false)
+  GAME:process_key(key, code, false)
 end
 
 ---@param key string
 ---@param code string
 --@param isRepead boolean
-function Love.keypressed(key, code, _)
+function love.keypressed(key, code, _)
   if not RELEASE and code == CONFIG.debug.key then
     DEBUG = not DEBUG
     print(DEBUG)
@@ -66,9 +72,11 @@ function Love.keypressed(key, code, _)
     WindowManager:setResolution({ width = 800, height = 600 })
   elseif key == "f2" then
     WindowManager:setResolution({ width = 1280, height = 720 })
+  elseif key == "p" then
+    GAME:toggle_pause();
   end
 
-  game:process_key(key, code, true)
+  GAME:process_key(key, code, true)
 end
 
 function love.mousemoved(x, y, dx, dy)
@@ -76,7 +84,9 @@ function love.mousemoved(x, y, dx, dy)
   MOUSE_INFO.y = y
 end
 
--- function love.treaderror(thread, errorMessage)
--- end
+function love.treaderror(thread, errorMessage)
+  print("Erro capturado: " .. tostring(msg))
+  love.event.quit()
+end
 
 -- #endregion

@@ -38,8 +38,8 @@ MOUSE_INFO = {
 
 
 -- #region Lick
-Lick = require 'libs.LICK.lick'
-Lick.reset = true
+-- Lick = require 'libs.LICK.lick'
+-- Lick.reset = true
 -- #endregion
 Love = love
 
@@ -48,6 +48,7 @@ WindowManager = require 'window_manager'
 Lume = require 'libs.lume.lume'
 Inspect = require 'libs.inspect.inspect'
 -- DebugGraph = require("libs.Love-Debug-Graph.debugGraph")
+Camera = require('libs.hump.camera')
 
 MakeEnum = require 'utils'.make_enum
 

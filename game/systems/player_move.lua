@@ -34,43 +34,42 @@ function PlayerMoveSystem:process(w, dt, e)
     end
   end
 
-  -- ---@type PositionData
-  -- local position = w:get_component(self.data.player, CTS.Position).data
-  -- local speed = w:get_component(self.data.player, CTS.Speed).data
-  -- local direction = w:get_component(self.data.player, CTS.Direction)
-  -- local player_state = w:get_component(self.data.player, CTS.PlayerState)
+  local player_state = w:get_component(self.data.player, CTS.PlayerState)
+
+  if player_state.data == "Walking" then
+    w.counters[self.name] = w.counters[self.name] + 1
+  else
+    return
+  end
+
+  ---@type PositionData
+  local position = w:get_component(self.data.player, CTS.Position).data
+  local speed = w:get_component(self.data.player, CTS.Speed).data
+  local direction = w:get_component(self.data.player, CTS.Direction)
 
   -- --update direction
   -- direction.data = ce_to_direction[e.event]
 
-  -- local ce = CONTROL_EVENT
+  local ce = CONTROL_EVENT
 
   -- --update position
 
-  -- if player_state ~= nil and player_state.data == "Walking" then
-  --   if e.event == ce.TurnLeft then
-  --     position.x = position.x - (speed * dt)
-  --   end
+  if player_state ~= nil and player_state.data == "Walking" and direction ~= nil then
+    if direction.data == "Left" then
+      position.x = position.x - (speed * dt)
+    end
 
-  --   if e.event == ce.TurnUp then
-  --     position.y = position.y - (speed * dt)
-  --   end
+    if direction.data == "Up" then
+      position.y = position.y - (speed * dt)
+    end
 
-  --   if e.event == ce.TurnDown then
-  --     position.y = position.y + (speed * dt)
-  --   end
-
-  --   if e.event == ce.TurnRight then
-  --     position.x = position.x + (speed * dt)
-  --   end
-  -- end
-
-  -- w.counters[self.name] = w.counters[self.name] + 1
-
-  -- print(Inspect(position))
-  -- print(Inspect(speed))
-  -- print(Inspect(direction))
-  -- print(Inspect(player_state))
+    if direction.data == "Down" then
+      position.y = position.y + (speed * dt)
+    end
+    if direction.data == "Right" then
+      position.x = position.x + (speed * dt)
+    end
+  end
 end
 
 function PlayerMoveSystem:destroy()

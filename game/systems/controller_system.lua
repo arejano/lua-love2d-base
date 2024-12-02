@@ -17,6 +17,10 @@ local ce_to_direction = {
   [CONTROL_EVENT.TurnRight] = "Right",
 }
 
+local move_keys = {
+  "a", "w", "s", "d"
+}
+
 ---@param w Ecs
 function ControllerSystem:start(w)
   w.counters[self.name] = 0
@@ -27,7 +31,11 @@ end
 ---@param dt number
 ---@param game_event ControllerEvent
 function ControllerSystem:process(w, dt, game_event)
-  w.counters[self.name] = w.counters[self.name] + 1
+  -- Faz o controller so dar update no contador quando a tecla eh pressionada
+  -- se nao ele contaria duas vezes keyDown/keyUp
+  if game_event.data.pressed then
+    w.counters[self.name] = w.counters[self.name] + 1
+  end
 
   if self.data.player == nil then
     local entity = w:query({ CTS.Player })[1]

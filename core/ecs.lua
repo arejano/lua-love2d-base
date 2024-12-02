@@ -27,7 +27,7 @@ local Ecs = {
   systems_by_state = {},
 
   pool_event = {},
-  counters = { events = 0, },
+  counters = { events = 0, ent = 0 },
 
   -- query
   query_data = nil,
@@ -76,6 +76,8 @@ end
 ---@param components Array<any>
 function Ecs:add_entity(components)
   local new_entity = #self.entities + 1
+
+  self.counters["ent"]= self.counters["ent"] + 1
 
   for _, component in pairs(components) do
     self:register_component(new_entity, component)

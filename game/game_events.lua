@@ -6,6 +6,7 @@ local game_event = MakeEnum({
   "Tick",
   "Combat",
   "RunMoveSystem",
+  "Render",
 })
 
 return game_event

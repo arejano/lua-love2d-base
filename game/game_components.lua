@@ -2,9 +2,13 @@
 local cts = MakeEnum({
   "Player",
   "Position",
+  "Transform",
   "Speed",
   "Direction",
-  "PlayerState"
+  "PlayerState",
+  "Camera",
+  "EntityName",
+  "Renderable",
 })
 
 return cts
