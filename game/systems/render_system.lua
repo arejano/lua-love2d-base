@@ -2,13 +2,17 @@
 local RenderSystem = {
   name = 'RenderSystem',
   states = { GAME_STATE.Running },
-  events = { GAME_EVENT.Render, }
+  events = { GAME_EVENT.Render, },
+  data = {
+    camera = nil
+  }
 }
 
 
 ---@param w Ecs
 function RenderSystem:start(w)
   w.counters[self.name] = 0
+  self.data.camera = w:get_resource("Camera")
 end
 
 ---@param w Ecs
@@ -16,10 +20,12 @@ end
 ---@param e NewEvent
 function RenderSystem:process(w, dt, e)
   w.counters[self.name] = w.counters[self.name] + 1
+
   local alpha = e.event.data;
 
   local entities = w:query({ CTS.Renderable })
   if entities ~= nil then
+    self.data.camera:applyTransform()
     for _, entity in ipairs(entities) do
       local position = w:get_component(entity, CTS.Position).data
       ---@type TransformData
@@ -41,8 +47,13 @@ function RenderSystem:process(w, dt, e)
       --       scaleY = entity.previousScaleY + (entity.scaleY - entity.previousScaleY) * alpha
       --     end
 
+      -- Love.graphics.setCanvas(self.data.canva)
+
+      -- self.data.camera:attach()
+
       -- Renderize a entidade com posição interpolada, rotação e escala
       if render_data and position and transform then
+        -- Sprite
         if render_data.sprite ~= nil then
           Love.graphics.draw(
             render_data.sprite,
@@ -58,6 +69,7 @@ function RenderSystem:process(w, dt, e)
           )
         end
 
+        -- Atlas+Quad
         if render_data.quad ~= nil and render_data.atlas ~= nil then
           Love.graphics.draw(
             render_data.atlas,
@@ -75,9 +87,10 @@ function RenderSystem:process(w, dt, e)
         end
       end
 
-      -- Love.graphics.rectangle("fill", position.x, position.y, 100, 100)
-      --   end
+      -- self.data.camera:detach()
+      -- Love.graphics.setCanvas()
     end
+    self.data.camera:resetTransform()
   else
     return
   end

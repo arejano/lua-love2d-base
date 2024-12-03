@@ -33,41 +33,8 @@ function game:new()
   self.world:add_system(camera_system)
   self.world:add_system(render_system)
 
-  FUR1 = love.graphics.newQuad(31, 63, 48, 47, self.atlases.retro_interior:getDimensions())
+  FUR1 = Love.graphics.newQuad(31, 63, 48, 47, self.atlases.retro_interior:getDimensions())
 
-  --Player
-  self.world:add_entity({
-    { type = CTS.Player,     data = true },
-    { type = CTS.EntityName, data = "Player" },
-    {
-      type = CTS.Renderable,
-      data = {
-        sprite = Love.graphics.newImage('assets/player.png')
-      }
-    },
-    { type = CTS.Position,    data = { x = 0, y = 0, z = 0 } },
-    {
-      type = CTS.Transform,
-      data = {
-        scale = {
-          x = 0.5,
-          y = 0.5
-        },
-        rotation = 0,
-        origem = {
-          x = 0,
-          y = 0,
-        },
-        inclination = {
-          x = 0,
-          y = 0
-        }
-      }
-    },
-    { type = CTS.Speed,       data = 25 },
-    { type = CTS.Direction,   data = "Right" },
-    { type = CTS.PlayerState, data = "Stay" },
-  })
 
   self.world:add_entity({
     { type = CTS.EntityName, data = "Box" },
@@ -101,12 +68,46 @@ function game:new()
     { type = CTS.Speed,      data = 1 },
   })
 
-  -- Camera
+
+  --Player
   self.world:add_entity({
-    { type = CTS.EntityName, data = "Camera" },
-    { type = CTS.Camera,     data = true },
-    { type = CTS.Position,   data = { x = 0, y = 0, z = 0 } },
+    { type = CTS.Player,     data = true },
+    { type = CTS.EntityName, data = "Player" },
+    {
+      type = CTS.Renderable,
+      data = {
+        sprite = Love.graphics.newImage('assets/player.png')
+      }
+    },
+    { type = CTS.Position,    data = { x = 0, y = 0, z = 0 } },
+    {
+      type = CTS.Transform,
+      data = {
+        scale = {
+          x = 0.2,
+          y = 0.2
+        },
+        rotation = 0,
+        origem = {
+          x = 0,
+          y = 0,
+        },
+        inclination = {
+          x = 0,
+          y = 0
+        }
+      }
+    },
+    { type = CTS.Speed,       data = 25 },
+    { type = CTS.Direction,   data = "Right" },
+    { type = CTS.PlayerState, data = "Stay" },
   })
+  -- -- Camera
+  -- self.world:add_entity({
+  --   { type = CTS.EntityName, data = "Camera" },
+  --   { type = CTS.Camera,     data = Camera },
+  --   { type = CTS.Position,   data = { x = 0, y = 0, z = 0 } },
+  -- })
 
   return self
 end

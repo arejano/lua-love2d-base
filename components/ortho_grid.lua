@@ -25,8 +25,8 @@ function OrthographicGrid:drawGrid()
       local screen_x = (x - y) * tile_width / 2 + offset_x
       local screen_y = (x + y) * tile_height / 2 + offset_y
 
-      love.graphics.setColor(1, 1, 1)
-      love.graphics.polygon("line",
+      Love.graphics.setColor(1, 1, 1)
+      Love.graphics.polygon("line",
         screen_x, screen_y,
         screen_x + tile_width / 2, screen_y + tile_height / 2,
         screen_x, screen_y + tile_height,

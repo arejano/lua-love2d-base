@@ -1,0 +1,55 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "base_map.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "Decorationspre.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 4
+        },
+        "assets_version1.1.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "base_map.tmx": {
+            "scale": 2,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 105,
+                "y": 140.5
+            }
+        },
+        "fence_version1.1.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "tileset_version1.1.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        }
+    },
+    "last.imagePath": "C:/projects/arj-lua-love2d-base/maps/simple_tileset_32x32_version1.1",
+    "map.fixedSize": false,
+    "map.lastUsedFormat": "tmx",
+    "openFiles": [
+        "base_map.tmx",
+        "assets_version1.1.tsx",
+        "fence_version1.1.tsx",
+        "tileset_version1.1.tsx",
+        "Decorationspre.tsx"
+    ],
+    "project": "base_map.tiled-project",
+    "recentFiles": [
+        "Decorationspre.tsx",
+        "tileset_version1.1.tsx",
+        "fence_version1.1.tsx",
+        "assets_version1.1.tsx",
+        "base_map.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx"
+}

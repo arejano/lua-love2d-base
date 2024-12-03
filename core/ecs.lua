@@ -11,6 +11,7 @@ local C_COUNTER = 0
 ---@field actual_state integer
 ---@field running_state integer
 ---@field paused_state integer
+---@field resources table
 local Ecs = {
   actual_state = 0,
   running_state = 0,
@@ -33,12 +34,23 @@ local Ecs = {
   query_data = nil,
   query_types = nil,
   delta_time = 0,
+  resources = {}
 }
 Ecs.__index = Ecs
 
 function Ecs:new()
   local _self = setmetatable({}, Ecs)
   return _self
+end
+
+function Ecs:add_resource(key, resource)
+  self.resources[key] = resource
+end
+
+function Ecs:get_resource(key)
+  if self.resources[key] ~= nil then
+    return self.resources[key]
+  end
 end
 
 ---@param running integer
@@ -77,7 +89,7 @@ end
 function Ecs:add_entity(components)
   local new_entity = #self.entities + 1
 
-  self.counters["ent"]= self.counters["ent"] + 1
+  self.counters["ent"] = self.counters["ent"] + 1
 
   for _, component in pairs(components) do
     self:register_component(new_entity, component)

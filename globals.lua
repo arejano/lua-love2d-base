@@ -48,7 +48,8 @@ WindowManager = require 'window_manager'
 Lume = require 'libs.lume.lume'
 Inspect = require 'libs.inspect.inspect'
 -- DebugGraph = require("libs.Love-Debug-Graph.debugGraph")
-Camera = require('libs.hump.camera')
+-- Camera = require('libs.hump.camera')
+Camera = require 'core.camera'
 
 MakeEnum = require 'utils'.make_enum
 

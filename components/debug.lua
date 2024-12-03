@@ -2,16 +2,16 @@ Debug = {}
 
 ---@param world Ecs
 function Debug:draw_debug(world, love_loop)
-  local drawTimeStart = love.timer.getTime()
-  local drawTimeEnd = love.timer.getTime()
+  local drawTimeStart = Love.timer.getTime()
+  local drawTimeEnd = Love.timer.getTime()
   local drawTime = drawTimeEnd - drawTimeStart
 
   if DEBUG then
-    love.graphics.push()
+    Love.graphics.push()
 
     local x, y = CONFIG.debug.stats.position.x, CONFIG.debug.stats.position.y
     local dy = CONFIG.debug.stats.lineHeight
-    local stats = love.graphics.getStats()
+    local stats = Love.graphics.getStats()
     local memoryUnit = "KB"
     local ram = collectgarbage("count")
     local vram = stats.texturememory / 1024
@@ -22,7 +22,7 @@ function Debug:draw_debug(world, love_loop)
     end
     local info = {
       "LOVE_LOOP: " .. love_loop,
-      "FPS: " .. ("%3d"):format(love.timer.getFPS()),
+      "FPS: " .. ("%3d"):format(Love.timer.getFPS()),
       "DRAW: " .. ("%7.3fms"):format(Lume.round(drawTime * 1000, .001)),
       "RAM: " .. string.format("%7.2f", Lume.round(ram, .01)) .. memoryUnit,
       "VRAM: " .. string.format("%6.2f", Lume.round(vram, .01)) .. memoryUnit,
@@ -34,35 +34,35 @@ function Debug:draw_debug(world, love_loop)
       -- "Fonts: " .. stats.fonts,
       "Mouse_X: " .. MOUSE_INFO.x,
       "Mouse_Y: " .. MOUSE_INFO.y,
-      "World: " .. Inspect(world),
+      "World: " .. Inspect(world.resources),
     }
     -- love.graphics.setFont(CONFIG.debug.stats.font[CONFIG.debug.stats.fontSize])
     for i, text in ipairs(info) do
       local sx, sy = CONFIG.debug.stats.shadowOffset.x, CONFIG.debug.stats.shadowOffset.y
-      love.graphics.setColor(CONFIG.debug.stats.shadow)
-      love.graphics.print(text, x + sx, y + sy + (i - 1) * dy)
-      love.graphics.setColor(CONFIG.debug.stats.foreground)
-      love.graphics.print(text, x, y + (i - 1) * dy)
+      Love.graphics.setColor(CONFIG.debug.stats.shadow)
+      Love.graphics.print(text, x + sx, y + sy + (i - 1) * dy)
+      Love.graphics.setColor(CONFIG.debug.stats.foreground)
+      Love.graphics.print(text, x, y + (i - 1) * dy)
     end
-    love.graphics.pop()
+    Love.graphics.pop()
   end
 end
 
 
 function Debug:draw_lines()
-  love.graphics.setColor(255, 0, 0)
+  Love.graphics.setColor(255, 0, 0)
   -- Tamanho da tela
-  local largura, altura = love.graphics.getDimensions()
+  local largura, altura = Love.graphics.getDimensions()
 
   -- Coordenadas do meio da tela
   local centroX = largura / 2
   local centroY = altura / 2
 
   -- Desenhar uma linha horizontal no meio da tela
-  love.graphics.line(0, centroY, largura, centroY) -- De ponta a ponta horizontalmente
+  Love.graphics.line(0, centroY, largura, centroY) -- De ponta a ponta horizontalmente
 
   -- Desenhar uma linha vertical no meio da tela
-  love.graphics.line(centroX, 0, centroX, altura) -- De ponta a ponta verticalmente
+  Love.graphics.line(centroX, 0, centroX, altura) -- De ponta a ponta verticalmente
 end
 
 return Debug
