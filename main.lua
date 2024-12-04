@@ -90,6 +90,10 @@ function Love.mousemoved(x, y, dx, dy)
   MOUSE_INFO.y = y
 end
 
+function Love.mousepressed(x, y, _)
+  GAME:spawn(x, y)
+end
+
 function Love.resize(width, height)
   local x, y, _            = Love.window.getPosition()
   WindowManager.resolution = {

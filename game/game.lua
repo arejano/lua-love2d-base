@@ -37,11 +37,32 @@ function game:new()
 
 
   self.world:add_entity({
-    { type = CTS.EntityName, data = "Box" },
+    { type = CTS.EntityName, data = "Background" },
     {
       type = CTS.Renderable,
       data = {
-        -- sprite = Love.graphics.newImage('assets/player.png'),
+        order = 0,
+        sprite = Love.graphics.newImage('assets/back_teste.jpg'),
+      }
+    },
+    {
+      type = CTS.Transform,
+      data = {
+        scale = { x = 1, y = 1 },
+        rotation = 0,
+        origem = { x = 0, y = 0, },
+        inclination = { x = 0, y = 0 }
+      }
+    },
+    { type = CTS.Position,   data = { x = -200, y = -200, z = 0 } },
+    { type = CTS.Speed,      data = 1 },
+  })
+
+  self.world:add_entity({
+    {
+      type = CTS.Renderable,
+      data = {
+        order = 1,
         quad = FUR1,
         atlas = self.atlases.retro_interior
       }
@@ -49,24 +70,15 @@ function game:new()
     {
       type = CTS.Transform,
       data = {
-        scale = {
-          x = 2,
-          y = 2
-        },
+        scale = { x = 2, y = 2 },
         rotation = 0,
-        origem = {
-          x = 0,
-          y = 0,
-        },
-        inclination = {
-          x = 0,
-          y = 0
-        }
+        origem = { x = 0, y = 0, },
+        inclination = { x = 0, y = 0 }
       }
     },
-    { type = CTS.Position,   data = { x = 10, y = 20, z = 0 } },
-    { type = CTS.Speed,      data = 1 },
+    { type = CTS.Position, data = { x = 10, y = 20, z = 0 } },
   })
+
 
 
   --Player
@@ -76,6 +88,7 @@ function game:new()
     {
       type = CTS.Renderable,
       data = {
+        order = 3,
         sprite = Love.graphics.newImage('assets/player.png')
       }
     },
@@ -83,25 +96,17 @@ function game:new()
     {
       type = CTS.Transform,
       data = {
-        scale = {
-          x = 0.2,
-          y = 0.2
-        },
+        scale = { x = 0.2, y = 0.2 },
         rotation = 0,
-        origem = {
-          x = 0,
-          y = 0,
-        },
-        inclination = {
-          x = 0,
-          y = 0
-        }
+        origem = { x = 0, y = 0, },
+        inclination = { x = 0, y = 0 }
       }
     },
     { type = CTS.Speed,       data = 25 },
     { type = CTS.Direction,   data = "Right" },
     { type = CTS.PlayerState, data = "Stay" },
   })
+
   -- -- Camera
   -- self.world:add_entity({
   --   { type = CTS.EntityName, data = "Camera" },
@@ -133,6 +138,29 @@ function game:process_key(key, code, pressed)
     }
   }
   self.world:add_event(new_event)
+end
+
+function game:spawn(x, y)
+  self.world:add_entity({
+    {
+      type = CTS.Renderable,
+      data = {
+        order = 1,
+        quad = FUR1,
+        atlas = self.atlases.retro_interior
+      }
+    },
+    {
+      type = CTS.Transform,
+      data = {
+        scale = { x = 2, y = 2 },
+        rotation = 0,
+        origem = { x = 0, y = 0, },
+        inclination = { x = 0, y = 0 }
+      }
+    },
+    { type = CTS.Position, data = { x = x, y = y, z = 0 } },
+  })
 end
 
 ---@param dt number

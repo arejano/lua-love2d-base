@@ -52,5 +52,6 @@ Inspect = require 'libs.inspect.inspect'
 Camera = require 'core.camera'
 
 MakeEnum = require 'utils'.make_enum
+Utils = require 'utils'
 
 Ecs = require("core.ecs")

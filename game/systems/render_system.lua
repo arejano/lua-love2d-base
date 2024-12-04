@@ -5,7 +5,8 @@ local RenderSystem = {
   events = { GAME_EVENT.Render, },
   data = {
     camera = nil
-  }
+  },
+  to_render = {}
 }
 
 
@@ -25,13 +26,29 @@ function RenderSystem:process(w, dt, e)
 
   local entities = w:query({ CTS.Renderable })
   if entities ~= nil then
-    self.data.camera:applyTransform()
     for _, entity in ipairs(entities) do
       local position = w:get_component(entity, CTS.Position).data
       ---@type TransformData
       local transform = w:get_component(entity, CTS.Transform).data
       local render_data = w:get_component(entity, CTS.Renderable).data
 
+      -- if render_data.order ~= nil then
+      table.insert(self.to_render, {
+        position = position,
+        transform = transform,
+        render_data = render_data,
+      })
+      -- end
+    end
+
+    table.sort(self.to_render, function(a, b)
+      return a.render_data.order < b.render_data.order
+    end)
+
+    self.data.camera:applyTransform()
+
+    for _, entity in ipairs(self.to_render) do
+      print(entity.render_data.order)
       --   if entity.position and entity.previousPosition then
       --     local x = entity.previousPosition.x + (entity.position.x - entity.previousPosition.x) * alpha
       --     local y = entity.previousPosition.y + (entity.position.y - entity.previousPosition.y) * alpha
@@ -52,44 +69,43 @@ function RenderSystem:process(w, dt, e)
       -- self.data.camera:attach()
 
       -- Renderize a entidade com posição interpolada, rotação e escala
-      if render_data and position and transform then
+      if entity.render_data and entity.position and entity.transform then
         -- Sprite
-        if render_data.sprite ~= nil then
+        if entity.render_data.sprite ~= nil then
           Love.graphics.draw(
-            render_data.sprite,
-            position.x,
-            position.y,
-            transform.rotation,
-            transform.scale.x,
-            transform.scale.y,
-            transform.origem.x,
-            transform.origem.y,
-            transform.inclination.x,
-            transform.inclination.x
+            entity.render_data.sprite,
+            entity.position.x,
+            entity.position.y,
+            entity.transform.rotation,
+            entity.transform.scale.x,
+            entity.transform.scale.y,
+            entity.transform.origem.x,
+            entity.transform.origem.y,
+            entity.transform.inclination.x,
+            entity.transform.inclination.x
           )
         end
 
         -- Atlas+Quad
-        if render_data.quad ~= nil and render_data.atlas ~= nil then
+        if entity.render_data.quad ~= nil and entity.render_data.atlas ~= nil then
           Love.graphics.draw(
-            render_data.atlas,
-            render_data.quad,
-            position.x,
-            position.y,
-            transform.rotation,
-            transform.scale.x,
-            transform.scale.y,
-            transform.origem.x,
-            transform.origem.y,
-            transform.inclination.x,
-            transform.inclination.x
+            entity.render_data.atlas,
+            entity.render_data.quad,
+            entity.position.x,
+            entity.position.y,
+            entity.transform.rotation,
+            entity.transform.scale.x,
+            entity.transform.scale.y,
+            entity.transform.origem.x,
+            entity.transform.origem.y,
+            entity.transform.inclination.x,
+            entity.transform.inclination.x
           )
         end
       end
-
-      -- self.data.camera:detach()
-      -- Love.graphics.setCanvas()
     end
+
+    for k, _ in pairs(self.to_render) do self.to_render[k] = nil end
     self.data.camera:resetTransform()
   else
     return

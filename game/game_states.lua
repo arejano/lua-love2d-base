@@ -7,4 +7,10 @@ local game_states = MakeEnum({
   "Configuration"
 })
 
-return game_states
+local player_states = MakeEnum({
+  "Walk",
+  "Stay",
+  "Jump"
+})
+
+return game_states, player_states
